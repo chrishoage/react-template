@@ -156,7 +156,7 @@ gulp.task('dev-server', () => {
       'Access-Control-Allow-Origin': `http://${HOST}:${PORT}`,
       'Access-Control-Allow-Headers': 'X-Requested-With'
     }
-  }).listen(PORT, 'localhost', (err) => {
+  }).listen(PORT, HOST, (err) => {
     if (err) throw new gutil.PluginError('webpack', err)
     gutil.log('[dev]', `Open http://${HOST}:${PORT}/`)
   })
