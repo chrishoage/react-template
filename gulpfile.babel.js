@@ -73,7 +73,7 @@ function generateWebpackConfig(env) {
   switch (env) {
     case 'development':
       const webpackDevConfig = deepMergeClone(webpackBaseConfig, {
-        devtool: 'eval-source-map',
+        devtool: 'cheap-module-eval-source-map',
         debug: true,
         entry: [`webpack-dev-server/client?http://${HOST}:${PORT}`, 'webpack/hot/only-dev-server'],
         output: {
