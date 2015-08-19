@@ -155,7 +155,7 @@ gulp.task('dev-server', () => {
     historyApiFallback: true
   }).listen(PORT, HOST, (err) => {
     if (err) throw new gutil.PluginError('webpack', err)
-    gutil.log('[dev]', `Open http://${HOST}:${PORT}/`)
+    gutil.log('[dev-server]', 'listening on', gutil.colors.cyan(`http://${HOST}:${PORT}`))
   })
 })
 
