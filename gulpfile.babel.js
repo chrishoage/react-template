@@ -1,14 +1,13 @@
 import gulp from 'gulp'
-import fs from 'fs'
 import path from 'path'
 import gulpif from 'gulp-if'
 import gutil from 'gulp-util'
 import del from 'del'
+import merge from 'lodash.merge'
 import runSequence from 'run-sequence'
 import eslint from 'gulp-eslint'
 import webpack from 'webpack'
 import WebpackServer from 'webpack-dev-server'
-import merge from 'lodash.merge'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 const {
