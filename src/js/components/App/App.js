@@ -33,7 +33,7 @@ export default class App {
     return (
       <div>
         <Counter increment={1} color="blue" />
-        <Counter increment={-10} color="darkred" />
+        <Counter increment={10} color="darkred" />
       </div>
     )
   }

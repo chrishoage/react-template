@@ -37,8 +37,7 @@
     "sass-loader": "^2.0.0",
     "style-loader": "^0.12.3",
     "webpack": "^1.12.1",
-    "webpack-dev-middleware": "^1.2.0",
-    "webpack-hot-middleware": "^2.0.0"
+    "webpack-hot-server": "chrishoage/webpack-hot-server"
   },
   "dependencies": {
     "babel-runtime": "^5.8.20",

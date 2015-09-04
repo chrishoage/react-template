@@ -7,7 +7,7 @@ import merge from 'lodash.merge'
 import runSequence from 'run-sequence'
 import eslint from 'gulp-eslint'
 import webpack from 'webpack'
-import WebpackServer from './WebpackHotServer'
+import WebpackServer from 'webpack-hot-server'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 const {
@@ -75,7 +75,7 @@ function generateWebpackConfig(env) {
       const webpackDevConfig = deepMergeClone(webpackBaseConfig, {
         devtool: 'cheap-module-eval-source-map',
         debug: true,
-        entry: ['webpack-hot-middleware/client'],
+        entry: ['webpack-hot-server/client'],
         output: {
           publicPath: `/${paths.output}/`
         },
@@ -140,12 +140,10 @@ gulp.task('webpack', (callback) => {
 
 gulp.task('dev-server', () => {
   new WebpackServer(webpack(webpackConfig), {
-    publicPath: `/${paths.output}/`,
+    publicPath: webpackConfig.output.publicPath,
     contentBase: fullPath(paths.dist),
-    inline: true,
     hot: !isProd,
-    stats: false,
-    historyApiFallback: true
+    stats: false
   }).listen(PORT, HOST, (err) => {
     if (err) throw new gutil.PluginError('webpack', err)
     gutil.log('[dev-server]', 'listening on', gutil.colors.cyan(`http://${HOST}:${PORT}`))
