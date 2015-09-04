@@ -7,7 +7,7 @@ import merge from 'lodash.merge'
 import runSequence from 'run-sequence'
 import eslint from 'gulp-eslint'
 import webpack from 'webpack'
-import WebpackServer from 'webpack-dev-server'
+import WebpackServer from './WebpackHotServer'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 const {
@@ -48,7 +48,7 @@ function generateWebpackConfig(env) {
       loaders: [{
         test: /.js?$/,
         exclude: /(node_modules|bower_components)/,
-        loaders: ['babel?stage=0&optional[]=runtime'],
+        loader: 'babel',
         include: fullPath(paths.js)
       }, {
         test: /.json$/,
@@ -61,6 +61,7 @@ function generateWebpackConfig(env) {
           'NODE_ENV': JSON.stringify(NODE_ENV)
         }
       }),
+      new webpack.optimize.OccurenceOrderPlugin(),
       new webpack.NoErrorsPlugin()
     ],
     resolve: {
@@ -74,17 +75,13 @@ function generateWebpackConfig(env) {
       const webpackDevConfig = deepMergeClone(webpackBaseConfig, {
         devtool: 'cheap-module-eval-source-map',
         debug: true,
-        entry: [`webpack-dev-server/client?http://${HOST}:${PORT}`, 'webpack/hot/only-dev-server'],
+        entry: ['webpack-hot-middleware/client'],
         output: {
-          publicPath: `http://${HOST}:${PORT}/assets/`
+          publicPath: `/${paths.output}/`
         },
         plugins: [new webpack.HotModuleReplacementPlugin()],
         module: {
           loaders: [
-            {
-              test: /.js?$/,
-              loader: 'react-hot'
-            },
             {
               test: /\.scss$/,
               loader: 'style!css!autoprefixer!sass?includePaths[]=' + fullPath(paths.scss)
@@ -98,7 +95,6 @@ function generateWebpackConfig(env) {
       const webpackProdConfig = deepMergeClone(webpackBaseConfig, {
         plugins: [
           new webpack.optimize.DedupePlugin(),
-          new webpack.optimize.OccurenceOrderPlugin(),
           new webpack.optimize.UglifyJsPlugin(),
           new ExtractTextPlugin('styles.css')
         ],
@@ -117,10 +113,8 @@ function generateWebpackConfig(env) {
 
 const webpackConfig = generateWebpackConfig(NODE_ENV)
 
-gulp.task('clean', (callback) => {
-  del([
-    paths.dist
-  ], callback)
+gulp.task('clean', () => {
+  return del([ paths.dist ])
 })
 
 gulp.task('copy', () => {
@@ -150,7 +144,7 @@ gulp.task('dev-server', () => {
     contentBase: fullPath(paths.dist),
     inline: true,
     hot: !isProd,
-    stats: true,
+    stats: false,
     historyApiFallback: true
   }).listen(PORT, HOST, (err) => {
     if (err) throw new gutil.PluginError('webpack', err)
