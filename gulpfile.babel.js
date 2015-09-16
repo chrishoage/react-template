@@ -11,7 +11,7 @@ import WebpackServer from 'webpack-hot-server'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 const {
-  NODE_ENV = 'production',
+  NODE_ENV = 'development',
   HOST = 'localhost',
   PORT = 9000
 } = process.env
