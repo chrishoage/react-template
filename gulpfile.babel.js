@@ -143,7 +143,7 @@ gulp.task('dev-server', () => {
     publicPath: webpackConfig.output.publicPath,
     contentBase: fullPath(paths.dist),
     hot: !isProd,
-    stats: false
+    stats: true
   }).listen(PORT, HOST, (err) => {
     if (err) throw new gutil.PluginError('webpack', err)
     gutil.log('[dev-server]', 'listening on', gutil.colors.cyan(`http://${HOST}:${PORT}`))
